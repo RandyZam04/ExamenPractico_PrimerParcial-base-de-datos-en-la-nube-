@@ -1,0 +1,67 @@
+// ==========================================================
+// SCRIPT MONGODB - ESTRUCTURA BASE DE DATOS: examen_practico
+// ==========================================================
+// Autor: Randy
+// Proyecto: Sistema de Autenticación (Examen Práctico)
+// Base de datos: MongoDB Atlas
+// ==========================================================
+
+// 1️⃣ Seleccionar la base de datos (se crea automáticamente si no existe)
+use examen_practico;
+
+// 2️⃣ Crear colección "usuarios" (opcional, se crea al insertar si no existe)
+db.createCollection("usuarios");
+
+// 3️⃣ Insertar documentos de ejemplo en la colección
+db.usuarios.insertMany([
+  {
+    "username": "randy123",
+    "email": "randy@example.com",
+    "password_hash": "$2b$12$8kH6J2D6Ih5I0K7OjxqQMeqj8oF9k4cdkPgG9cf1hV0Dl4U9qLgHu",
+    "fecha_registro": new Date(),
+    "activo": true
+  },
+  {
+    "username": "diego_dev",
+    "email": "diego@example.com",
+    "password_hash": "$2b$12$dCbe9Yoxn64cdkUu4m2nK.Ol2Z7Eo4hYF3S4z0K2rQZ8C0ZKf9vPq",
+    "fecha_registro": new Date(),
+    "activo": true
+  },
+  {
+    "username": "admin01",
+    "email": "admin@example.com",
+    "password_hash": "$2b$12$6sF1x9KQWUZpECP1d6A8deH7Eo7C5YxJZs5hQfH/j/CMV5r8qU7nS",
+    "fecha_registro": new Date(),
+    "activo": true
+  }
+]);
+
+// 4️⃣ Crear índices únicos para garantizar que no haya duplicados
+db.usuarios.createIndex({ username: 1 }, { unique: true });
+db.usuarios.createIndex({ email: 1 }, { unique: true });
+
+// 5️⃣ Crear colección "logs" para registrar los inicios de sesión
+db.createCollection("logs");
+
+// 6️⃣ Insertar algunos logs de ejemplo
+db.logs.insertMany([
+  {
+    "username": "randy123",
+    "estado": "exitoso",
+    "fecha": new Date("2025-11-10T15:30:00Z")
+  },
+  {
+    "username": "diego_dev",
+    "estado": "fallido",
+    "fecha": new Date("2025-11-10T15:45:00Z")
+  }
+]);
+
+// 7️⃣ Crear índice para búsquedas rápidas en los logs
+db.logs.createIndex({ username: 1 });
+db.logs.createIndex({ fecha: -1 });
+
+// ==========================================================
+// FIN DEL SCRIPT
+// ==========================================================
